@@ -1,4 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# EcoTrack – Community Tool Sharing Marketplace
+
+A UI-only Next.js prototype for a community tool sharing platform where users can rent tools from neighbors, save money, and reduce waste.
+
+## Project Overview
+
+EcoTrack is a tool sharing marketplace that connects community members to share tools and equipment. This is a **UI-only prototype** with no backend functionality - perfect for demonstrating the user interface and user experience.
+
+## Features
+
+- **Home Page**: Landing page with value propositions and call-to-action
+- **Authentication**: Sign in and sign up forms (UI only)
+- **Tool Search**: Browse and search available tools with filters
+- **Tool Details**: View detailed information about tools including images, specifications, and owner info
+- **Booking System**: Interactive booking status component (UI only)
+- **User Profile**: User dashboard for managing listings and bookings
+- **Add Tool**: Form for listing new tools (UI only)
+
+## Technology Stack
+
+- **Framework**: Next.js 16 with App Router
+- **Language**: JavaScript (no TypeScript)
+- **Styling**: Inline styles only (no CSS frameworks)
+- **Components**: React functional components with hooks
+- **Icons**: Inline SVG icons
+- **Images**: Placeholder images from Picsum
 
 ## Getting Started
 
@@ -16,21 +41,68 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+ecotrack/
+├── app/                    # Next.js App Router pages
+│   ├── auth/              # Authentication pages
+│   │   ├── sign-in/
+│   │   └── sign-up/
+│   ├── tools/             # Tool-related pages
+│   │   └── [id]/         # Dynamic tool details page
+│   ├── add-tool/          # Add new tool page
+│   ├── bookings/          # User bookings page
+│   ├── get-started/       # Getting started page
+│   ├── profile/           # User profile page
+│   ├── search/            # Tool search page
+│   ├── layout.jsx         # Root layout
+│   └── page.jsx          # Home page
+├── components/             # Reusable UI components
+│   ├── Navbar.jsx         # Navigation component
+│   ├── ToolCard.jsx       # Tool card component
+│   └── BookingStatus.jsx # Booking status component
+├── public/                # Static assets
+└── package.json           # Dependencies and scripts
+```
 
-## Learn More
+## Key Design Decisions
 
-To learn more about Next.js, take a look at the following resources:
+- **No CSS Frameworks**: Uses only inline styles for maximum portability
+- **No Backend**: All forms and interactions are UI-only demonstrations
+- **Minimal Dependencies**: Only essential Next.js and React dependencies
+- **Responsive Design**: Mobile-first approach with inline media queries where needed
+- **Accessibility**: Semantic HTML5 elements with proper ARIA labels
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-## Deploy on Vercel
+## Pages
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Home** (`/`) - Landing page with hero section and features
+2. **Get Started** (`/get-started`) - Onboarding page for new users
+3. **Sign In** (`/auth/sign-in`) - User login form
+4. **Sign Up** (`/auth/sign-up`) - User registration form
+5. **Search** (`/search`) - Tool browsing with filters
+6. **Tool Details** (`/tools/[id]`) - Individual tool information
+7. **Add Tool** (`/add-tool`) - Form to list new tools
+8. **Bookings** (`/bookings`) - User's booking history
+9. **Profile** (`/profile`) - User profile and settings
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Components
+
+- **Navbar**: Responsive navigation with mobile menu toggle
+- **ToolCard**: Reusable card for displaying tool information
+- **BookingStatus**: Status badge component with different states
+
+## Notes
+
+- This is a frontend-only prototype
+- All form submissions show alerts instead of actual functionality
+- Images use placeholder services (Picsum)
+- No external CSS or styling libraries
+- Focus on clean, semantic HTML and accessibility
