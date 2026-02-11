@@ -1,71 +1,178 @@
-'use client'
-import { useState } from 'react'
-import Navbar from '../../components/Navbar'
+"use client";
+
+import { useState } from "react";
+import Navbar from "../../components/Navbar";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function AddToolPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    pricePerDay: '',
-    description: '',
-    brand: '',
-    model: '',
-    condition: '',
-    location: ''
-  })
+    name: "",
+    category: "",
+    pricePerDay: "",
+    description: "",
+    brand: "",
+    model: "",
+    condition: "",
+    location: "",
+  });
+
+  const [images, setImages] = useState([]); // File[]
+  const [previews, setPreviews] = useState([]); // string[]
+  const [loading, setLoading] = useState(false);
 
   const categories = [
-    'Power Tools',
-    'Hand Tools',
-    'Equipment',
-    'Cleaning',
-    'Painting',
-    'Gardening',
-    'Automotive',
-    'Other'
-  ]
+    "Power Tools",
+    "Hand Tools",
+    "Equipment",
+    "Cleaning",
+    "Painting",
+    "Gardening",
+    "Automotive",
+    "Other",
+  ];
 
-  const conditions = [
-    'Like New',
-    'Excellent',
-    'Good',
-    'Fair',
-    'Acceptable'
-  ]
+  const conditions = ["Like New", "Excellent", "Good", "Fair", "Acceptable"];
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    alert('Tool listing created! (This is a UI-only demo)')
-    console.log('Form data:', formData)
-  }
+  const handleImagesChange = (e) => {
+    const files = Array.from(e.target.files || []);
+    setImages(files);
+
+    // preview
+    const urls = files.map((f) => URL.createObjectURL(f));
+    setPreviews(urls);
+  };
+
+  const uploadOneImage = async ({ file, ownerId, toolId }) => {
+    const ext = file.name.split(".").pop() || "jpg";
+    const fileName = `${crypto.randomUUID()}.${ext}`;
+    const filePath = `${ownerId}/${toolId}/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("tool-photos")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage.from("tool-photos").getPublicUrl(filePath);
+    const publicUrl = data?.publicUrl;
+
+    // save record in tool_images
+    const { error: imgInsertError } = await supabase.from("tool_images").insert({
+      tool_id: toolId,
+      owner_id: ownerId,
+      path: filePath,
+      url: publicUrl,
+    });
+
+    if (imgInsertError) throw imgInsertError;
+
+    return publicUrl;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Must be logged in
+      const { data: sessionData } = await supabase.auth.getSession();
+      const session = sessionData?.session;
+
+      if (!session) {
+        alert("Please sign in first.");
+        setLoading(false);
+        return;
+      }
+
+      const ownerId = session.user.id;
+
+      // 1) Insert tool
+      const payload = {
+        owner_id: ownerId,
+        name: formData.name,
+        category: formData.category,
+        price_per_day: Number(formData.pricePerDay),
+        description: formData.description,
+        brand: formData.brand || null,
+        model: formData.model || null,
+        condition: formData.condition,
+        location: formData.location,
+        is_available: true,
+      };
+
+      const { data: toolRow, error: toolError } = await supabase
+        .from("tools")
+        .insert(payload)
+        .select("id")
+        .single();
+
+      if (toolError) throw toolError;
+
+      const toolId = toolRow.id;
+
+      // 2) Upload images (optional but you want required)
+      if (images.length === 0) {
+        alert("Please add at least 1 image.");
+        setLoading(false);
+        return;
+      }
+
+      for (const file of images) {
+        await uploadOneImage({ file, ownerId, toolId });
+      }
+
+      alert("Tool listed successfully!");
+      window.location.href = "/search";
+    } catch (err) {
+      console.error(err);
+      alert("Error: " + (err?.message || "Something went wrong"));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div style={{ minHeight: "100vh", backgroundColor: "#f9fafb" }}>
       <Navbar />
 
-      <main className="max-w-[900px] mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+      <main style={{ maxWidth: "900px", margin: "0 auto", padding: "32px 16px" }}>
+        <div style={{ marginBottom: "32px" }}>
+          <h1 style={{ fontSize: "36px", fontWeight: "bold", color: "#111827", marginBottom: "8px" }}>
             List Your Tool
           </h1>
-          <p className="text-gray-500">
+          <p style={{ color: "#6b7280" }}>
             Share your tools with the community and earn some extra income
           </p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-          <form className="gap-4" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+        <div
+          style={{
+            backgroundColor: "white",
+            borderRadius: "8px",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+            padding: "24px",
+            border: "1px solid #e5e7eb",
+          }}
+        >
+          <form onSubmit={handleSubmit}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                gap: "24px",
+                marginBottom: "24px",
+              }}
+            >
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" style={{ display: "block", fontSize: "14px", fontWeight: "500", color: "#374151", marginBottom: "8px" }}>
                   Tool Name *
                 </label>
                 <input
@@ -74,14 +181,14 @@ export default function AddToolPage() {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  style={{ width: "100%", padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: "6px" }}
                   placeholder="e.g., Power Drill, Circular Saw"
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="category" style={{ display: "block", fontSize: "14px", fontWeight: "500", color: "#374151", marginBottom: "8px" }}>
                   Category *
                 </label>
                 <select
@@ -89,19 +196,21 @@ export default function AddToolPage() {
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  style={{ width: "100%", padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: "6px" }}
                   required
                 >
                   <option value="">Select a category</option>
-                  {categories.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <label htmlFor="pricePerDay" className="block text-sm font-medium text-gray-700 mb-2">
-                  Price per Day (₹) *
+                <label htmlFor="pricePerDay" style={{ display: "block", fontSize: "14px", fontWeight: "500", color: "#374151", marginBottom: "8px" }}>
+                  Price per Day ($) *
                 </label>
                 <input
                   type="number"
@@ -109,8 +218,8 @@ export default function AddToolPage() {
                   name="pricePerDay"
                   value={formData.pricePerDay}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="150.00"
+                  style={{ width: "100%", padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: "6px" }}
+                  placeholder="15.00"
                   step="0.01"
                   min="0"
                   required
@@ -118,7 +227,7 @@ export default function AddToolPage() {
               </div>
 
               <div>
-                <label htmlFor="condition" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="condition" style={{ display: "block", fontSize: "14px", fontWeight: "500", color: "#374151", marginBottom: "8px" }}>
                   Condition *
                 </label>
                 <select
@@ -126,18 +235,20 @@ export default function AddToolPage() {
                   name="condition"
                   value={formData.condition}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  style={{ width: "100%", padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: "6px" }}
                   required
                 >
                   <option value="">Select condition</option>
-                  {conditions.map(cond => (
-                    <option key={cond} value={cond}>{cond}</option>
+                  {conditions.map((cond) => (
+                    <option key={cond} value={cond}>
+                      {cond}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="brand" style={{ display: "block", fontSize: "14px", fontWeight: "500", color: "#374151", marginBottom: "8px" }}>
                   Brand
                 </label>
                 <input
@@ -146,13 +257,13 @@ export default function AddToolPage() {
                   name="brand"
                   value={formData.brand}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="e.g., DeWalt, Bosch"
+                  style={{ width: "100%", padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: "6px" }}
+                  placeholder="e.g., DeWalt, Makita"
                 />
               </div>
 
               <div>
-                <label htmlFor="model" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="model" style={{ display: "block", fontSize: "14px", fontWeight: "500", color: "#374151", marginBottom: "8px" }}>
                   Model
                 </label>
                 <input
@@ -161,14 +272,14 @@ export default function AddToolPage() {
                   name="model"
                   value={formData.model}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  style={{ width: "100%", padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: "6px" }}
                   placeholder="e.g., DCD771C2"
                 />
               </div>
             </div>
 
-            <div className="mb-6">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+            <div style={{ marginBottom: "24px" }}>
+              <label htmlFor="description" style={{ display: "block", fontSize: "14px", fontWeight: "500", color: "#374151", marginBottom: "8px" }}>
                 Description *
               </label>
               <textarea
@@ -176,15 +287,15 @@ export default function AddToolPage() {
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md min-h-[100px]"
-                placeholder="Describe your tool, its features, and any important details renters should know..."
-                rows={4}
+                style={{ width: "100%", padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: "6px", minHeight: "100px" }}
+                placeholder="Describe your tool..."
+                rows="4"
                 required
               />
             </div>
 
-            <div className="mb-6">
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+            <div style={{ marginBottom: "24px" }}>
+              <label htmlFor="location" style={{ display: "block", fontSize: "14px", fontWeight: "500", color: "#374151", marginBottom: "8px" }}>
                 Pickup Location *
               </label>
               <input
@@ -193,64 +304,73 @@ export default function AddToolPage() {
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                style={{ width: "100%", padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: "6px" }}
                 placeholder="Enter your address or neighborhood"
                 required
               />
-              <p className="mt-1 text-xs text-gray-500">
-                This helps renters find tools near them. Your exact address will not be shared publicly.
-              </p>
             </div>
 
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Add Photos
+            {/* IMAGES */}
+            <div style={{ marginBottom: "32px" }}>
+              <h3 style={{ fontSize: "18px", fontWeight: "600", color: "#111827", marginBottom: "12px" }}>
+                Add Photos * (required)
               </h3>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                <div className="text-gray-400 mb-2">
-                  <svg width="48" height="48" fill="none" viewBox="0 0 24 24" className="mx-auto">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                  </svg>
+
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImagesChange}
+                required
+              />
+
+              {previews.length > 0 && (
+                <div style={{ marginTop: "16px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "12px" }}>
+                  {previews.map((src, idx) => (
+                    <img
+                      key={idx}
+                      src={src}
+                      alt="preview"
+                      style={{ width: "100%", height: "120px", objectFit: "cover", borderRadius: "8px", border: "1px solid #e5e7eb" }}
+                    />
+                  ))}
                 </div>
-                <p className="text-sm text-gray-500 mb-2">
-                  Click to upload or drag and drop
-                </p>
-                <p className="text-xs text-gray-400">
-                  PNG, JPG, GIF up to 10MB
-                </p>
-                <button
-                  type="button"
-                  className="mt-4 px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-md border border-gray-300"
-                >
-                  Select Files
-                </button>
-              </div>
+              )}
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-              <h4 className="text-sm font-semibold text-blue-900 mb-2">
-                Listing Guidelines
-              </h4>
-              <ul className="text-sm text-blue-900 list-disc pl-5 space-y-1">
-                <li>Be honest about the condition of your tool</li>
-                <li>Include clear, well-lit photos</li>
-                <li>Set a fair price based on market rates</li>
-                <li>Respond to booking requests promptly</li>
-                <li>Ensure tools are clean and in working order</li>
-              </ul>
-            </div>
-
-            <div className="flex gap-4">
+            <div style={{ display: "flex", gap: "16px" }}>
               <button
                 type="submit"
-                className="flex-1 bg-emerald-500 text-white px-6 py-3 rounded-lg text-base font-medium"
+                disabled={loading}
+                style={{
+                  flex: 1,
+                  backgroundColor: loading ? "#93c5fd" : "#2563eb",
+                  color: "white",
+                  padding: "12px 24px",
+                  borderRadius: "8px",
+                  fontSize: "16px",
+                  fontWeight: "500",
+                  cursor: loading ? "not-allowed" : "pointer",
+                  border: "none",
+                }}
               >
-                List Tool
+                {loading ? "Listing..." : "List Tool"}
               </button>
+
               <button
                 type="button"
                 onClick={() => window.history.back()}
-                className="flex-1 bg-gray-100 text-gray-700 px-6 py-3 rounded-lg text-base font-medium border border-gray-300"
+                style={{
+                  flex: 1,
+                  backgroundColor: "#f3f4f6",
+                  color: "#374151",
+                  padding: "12px 24px",
+                  borderRadius: "8px",
+                  fontSize: "16px",
+                  fontWeight: "500",
+                  cursor: "pointer",
+                  border: "1px solid #d1d5db",
+                }}
               >
                 Cancel
               </button>
@@ -259,5 +379,5 @@ export default function AddToolPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
