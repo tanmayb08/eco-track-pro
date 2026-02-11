@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import Navbar from '../../../components/Navbar'
-import BookingStatus from '../../../components/BookingStatus'
+import Navbar from '../../../../components/Navbar'
+import BookingStatus from '../../../../components/BookingStatus'
 
 const mockTool = {
   id: 1,

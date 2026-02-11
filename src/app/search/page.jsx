@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
-import Navbar from '../../components/Navbar'
-import ToolCard from '../../components/ToolCard'
+import Navbar from '../../../components/Navbar'
+import ToolCard from '../../../components/ToolCard'
 
 const mockTools = [
   {

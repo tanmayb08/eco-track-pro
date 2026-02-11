@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import Navbar from '../../components/Navbar'
+import Navbar from '../../../components/Navbar'
 
 export default function AddToolPage() {
   const [formData, setFormData] = useState({

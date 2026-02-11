@@ -1,15 +1,16 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import Navbar from '../../../components/Navbar'
+import Navbar from '../../../../components/Navbar'
 
-export default function SignInPage() {
+export default function SignUpPage() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    alert('Sign in functionality is not implemented in this UI-only demo')
+    alert('Sign up functionality is not implemented in this UI-only demo')
   }
 
   return (
@@ -35,7 +36,7 @@ export default function SignInPage() {
             marginBottom: '8px',
             textAlign: 'center'
           }}>
-            Sign In
+            Create Account
           </h1>
           
           <p style={{ 
@@ -44,10 +45,38 @@ export default function SignInPage() {
             marginBottom: '32px',
             textAlign: 'center'
           }}>
-            Welcome back to EcoTrack
+            Join the EcoTrack community
           </p>
           
           <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: '24px' }}>
+              <label htmlFor="name" style={{ 
+                display: 'block', 
+                fontSize: '14px', 
+                fontWeight: '500', 
+                color: '#374151',
+                marginBottom: '8px'
+              }}>
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your name"
+                required
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+            
             <div style={{ marginBottom: '24px' }}>
               <label htmlFor="email" style={{ 
                 display: 'block', 
@@ -91,7 +120,7 @@ export default function SignInPage() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder="Create a password"
                 required
                 style={{
                   width: '100%',
@@ -120,7 +149,7 @@ export default function SignInPage() {
                 marginBottom: '24px'
               }}
             >
-              Sign In
+              Create Account
             </button>
           </form>
           
@@ -129,16 +158,16 @@ export default function SignInPage() {
             fontSize: '14px',
             color: '#6b7280'
           }}>
-            Don&apos;t have an account?{' '}
+            Already have an account?{' '}
             <Link 
-              href="/auth/sign-up"
+              href="/auth/sign-in"
               style={{
                 color: '#10b981',
                 textDecoration: 'none',
                 fontWeight: '500'
               }}
             >
-              Sign Up
+              Sign In
             </Link>
           </div>
         </div>
