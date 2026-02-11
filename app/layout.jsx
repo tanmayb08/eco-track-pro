@@ -1,3 +1,5 @@
+import './globals.css'
+
 export const metadata = {
   title: 'EcoTrack – Community Tool Sharing Marketplace',
   description: 'Share tools. Save money. Reduce waste.',

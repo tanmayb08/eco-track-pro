@@ -3,213 +3,94 @@ import Navbar from '../components/Navbar'
 
 export default function HomePage() {
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
-      <main style={{ 
-        maxWidth: '1200px', 
-        margin: '0 auto', 
-        padding: '80px 16px 32px',
-        textAlign: 'center'
-      }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h1 style={{ 
-            fontSize: '48px', 
-            fontWeight: 'bold', 
-            color: '#111827',
-            marginBottom: '24px',
-            lineHeight: '1.2'
-          }}>
-            Share tools. Save money. Reduce waste.
-          </h1>
-          
-          <p style={{ 
-            fontSize: '20px', 
-            color: '#6b7280',
-            marginBottom: '48px',
-            lineHeight: '1.6'
-          }}>
+
+      <main className="max-w-[1200px] mx-auto px-4 pt-20 pb-8 text-center">
+        <div className="max-w-[800px] mx-auto">
+          <div className="relative inline-block">
+  {/* Floating emojis */}
+  <span className="absolute -top-6 -left-8 text-3xl hidden sm:block animate-float-slow">🛠️</span>
+  <span className="absolute -top-10 right-0 text-3xl hidden sm:block animate-float-slow">🔧</span>
+  <span className="absolute top-1/2 -right-10 text-3xl hidden sm:block animate-float-slow">♻️</span>
+  <span className="absolute bottom-0 -left-10 text-3xl hidden sm:block animate-float-slow">💰</span>
+
+  {/* Heading */}
+  <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+    Share tools. Save money. Reduce waste.
+  </h1>
+</div>
+
+
+          <p className="text-xl text-gray-500 mb-12 leading-relaxed">
             Join your community in sharing tools and equipment. Rent what you need, when you need it, and earn money from items you already own.
           </p>
-          
-          <div style={{ 
-            display: 'flex', 
-            gap: '16px', 
-            justifyContent: 'center',
-            flexWrap: 'wrap'
-          }}>
-            <Link 
+
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link
               href="/get-started"
-              style={{
-                backgroundColor: '#10b981',
-                color: '#ffffff',
-                padding: '16px 32px',
-                borderRadius: '8px',
-                fontSize: '18px',
-                fontWeight: '600',
-                textDecoration: 'none',
-                transition: 'all 0.2s',
-                display: 'inline-block'
-              }}
+              className="bg-emerald-500 text-white px-8 py-4 rounded-lg text-lg font-semibold inline-block transition-all"
             >
               Get Started
             </Link>
-            
-            <Link 
+
+            <Link
               href="/search"
-              style={{
-                backgroundColor: '#ffffff',
-                color: '#10b981',
-                padding: '16px 32px',
-                borderRadius: '8px',
-                fontSize: '18px',
-                fontWeight: '600',
-                textDecoration: 'none',
-                border: '2px solid #10b981',
-                transition: 'all 0.2s',
-                display: 'inline-block'
-              }}
+              className="bg-white text-emerald-500 px-8 py-4 rounded-lg text-lg font-semibold inline-block border-2 border-emerald-500 transition-all"
             >
               Browse Tools
             </Link>
           </div>
         </div>
-        
-        <div style={{ 
-          marginTop: '96px',
-          backgroundColor: '#eff6ff',
-          borderRadius: '12px',
-          padding: '48px 32px',
-          textAlign: 'center'
-        }}>
-          <h2 style={{ 
-            fontSize: '28px', 
-            fontWeight: 'bold', 
-            color: '#111827', 
-            marginBottom: '16px'
-          }}>
+
+        <div className="mt-24 bg-blue-50 rounded-xl px-8 py-12 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Share Your Tools
           </h2>
-          <p style={{ 
-            fontSize: '18px', 
-            color: '#6b7280', 
-            marginBottom: '24px',
-            lineHeight: '1.6'
-          }}>
+          <p className="text-lg text-gray-500 mb-6 leading-relaxed">
             Have tools you&apos;re not using? List them on EcoTrack and earn money while helping your community.
           </p>
-          <Link 
+          <Link
             href="/add-tool"
-            style={{
-              backgroundColor: '#10b981',
-              color: '#ffffff',
-              padding: '12px 24px',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: '600',
-              textDecoration: 'none',
-              display: 'inline-block'
-            }}
+            className="bg-emerald-500 text-white px-6 py-3 rounded-lg text-base font-semibold inline-block"
           >
             List a Tool
           </Link>
         </div>
-        
-        <div style={{ 
-          marginTop: '96px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '48px'
-        }}>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ 
-              width: '80px', 
-              height: '80px', 
-              backgroundColor: '#dcfce7',
-              borderRadius: '50%',
-              margin: '0 auto 24px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '32px'
-            }}>
+
+        <div className="mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+          <div className="text-center">
+            <div className="w-20 h-20 bg-emerald-100 rounded-full mx-auto mb-6 flex items-center justify-center text-3xl">
               💰
             </div>
-            <h3 style={{ 
-              fontSize: '24px', 
-              fontWeight: '600', 
-              color: '#111827', 
-              marginBottom: '12px'
-            }}>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-3">
               Save Money
             </h3>
-            <p style={{ 
-              fontSize: '16px', 
-              color: '#6b7280', 
-              lineHeight: '1.5'
-            }}>
+            <p className="text-base text-gray-500 leading-snug">
               Rent tools instead of buying. Save hundreds on expensive equipment you only use occasionally.
             </p>
           </div>
-          
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ 
-              width: '80px', 
-              height: '80px', 
-              backgroundColor: '#dbeafe',
-              borderRadius: '50%',
-              margin: '0 auto 24px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '32px'
-            }}>
+
+          <div className="text-center">
+            <div className="w-20 h-20 bg-blue-100 rounded-full mx-auto mb-6 flex items-center justify-center text-3xl">
               🤝
             </div>
-            <h3 style={{ 
-              fontSize: '24px', 
-              fontWeight: '600', 
-              color: '#111827', 
-              marginBottom: '12px'
-            }}>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-3">
               Build Community
             </h3>
-            <p style={{ 
-              fontSize: '16px', 
-              color: '#6b7280', 
-              lineHeight: '1.5'
-            }}>
+            <p className="text-base text-gray-500 leading-snug">
               Connect with neighbors and build a stronger, more sustainable community through sharing.
             </p>
           </div>
-          
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ 
-              width: '80px', 
-              height: '80px', 
-              backgroundColor: '#fef3c7',
-              borderRadius: '50%',
-              margin: '0 auto 24px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '32px'
-            }}>
+
+          <div className="text-center">
+            <div className="w-20 h-20 bg-amber-100 rounded-full mx-auto mb-6 flex items-center justify-center text-3xl">
               ♻️
             </div>
-            <h3 style={{ 
-              fontSize: '24px', 
-              fontWeight: '600', 
-              color: '#111827', 
-              marginBottom: '12px'
-            }}>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-3">
               Reduce Waste
             </h3>
-            <p style={{ 
-              fontSize: '16px', 
-              color: '#6b7280', 
-              lineHeight: '1.5'
-            }}>
+            <p className="text-base text-gray-500 leading-snug">
               Make the most of existing resources. Less manufacturing means less environmental impact.
             </p>
           </div>

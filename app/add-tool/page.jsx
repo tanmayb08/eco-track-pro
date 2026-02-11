@@ -16,7 +16,7 @@ export default function AddToolPage() {
 
   const categories = [
     'Power Tools',
-    'Hand Tools', 
+    'Hand Tools',
     'Equipment',
     'Cleaning',
     'Painting',
@@ -48,24 +48,24 @@ export default function AddToolPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
-      <main style={{ maxWidth: '900px', margin: '0 auto', padding: '32px 16px' }}>
-        <div style={{ marginBottom: '32px' }}>
-          <h1 style={{ fontSize: '36px', fontWeight: 'bold', color: '#111827', marginBottom: '8px' }}>
+
+      <main className="max-w-[900px] mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
             List Your Tool
           </h1>
-          <p style={{ color: '#6b7280' }}>
+          <p className="text-gray-500">
             Share your tools with the community and earn some extra income
           </p>
         </div>
 
-        <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '24px', border: '1px solid #e5e7eb' }}>
-          <form onSubmit={handleSubmit}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px', marginBottom: '24px' }}>
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
+          <form className="gap-4" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
               <div>
-                <label htmlFor="name" style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                   Tool Name *
                 </label>
                 <input
@@ -74,14 +74,14 @@ export default function AddToolPage() {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px' }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="e.g., Power Drill, Circular Saw"
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="category" style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
                   Category *
                 </label>
                 <select
@@ -89,7 +89,7 @@ export default function AddToolPage() {
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px' }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   required
                 >
                   <option value="">Select a category</option>
@@ -100,8 +100,8 @@ export default function AddToolPage() {
               </div>
 
               <div>
-                <label htmlFor="pricePerDay" style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
-                  Price per Day ($) *
+                <label htmlFor="pricePerDay" className="block text-sm font-medium text-gray-700 mb-2">
+                  Price per Day (₹) *
                 </label>
                 <input
                   type="number"
@@ -109,8 +109,8 @@ export default function AddToolPage() {
                   name="pricePerDay"
                   value={formData.pricePerDay}
                   onChange={handleChange}
-                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px' }}
-                  placeholder="15.00"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="150.00"
                   step="0.01"
                   min="0"
                   required
@@ -118,7 +118,7 @@ export default function AddToolPage() {
               </div>
 
               <div>
-                <label htmlFor="condition" style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                <label htmlFor="condition" className="block text-sm font-medium text-gray-700 mb-2">
                   Condition *
                 </label>
                 <select
@@ -126,7 +126,7 @@ export default function AddToolPage() {
                   name="condition"
                   value={formData.condition}
                   onChange={handleChange}
-                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px' }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   required
                 >
                   <option value="">Select condition</option>
@@ -137,7 +137,7 @@ export default function AddToolPage() {
               </div>
 
               <div>
-                <label htmlFor="brand" style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-2">
                   Brand
                 </label>
                 <input
@@ -146,13 +146,13 @@ export default function AddToolPage() {
                   name="brand"
                   value={formData.brand}
                   onChange={handleChange}
-                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px' }}
-                  placeholder="e.g., DeWalt, Makita"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="e.g., DeWalt, Bosch"
                 />
               </div>
 
               <div>
-                <label htmlFor="model" style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                <label htmlFor="model" className="block text-sm font-medium text-gray-700 mb-2">
                   Model
                 </label>
                 <input
@@ -161,14 +161,14 @@ export default function AddToolPage() {
                   name="model"
                   value={formData.model}
                   onChange={handleChange}
-                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px' }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="e.g., DCD771C2"
                 />
               </div>
             </div>
 
-            <div style={{ marginBottom: '24px' }}>
-              <label htmlFor="description" style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <div className="mb-6">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
                 Description *
               </label>
               <textarea
@@ -176,15 +176,15 @@ export default function AddToolPage() {
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px', minHeight: '100px' }}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md min-h-[100px]"
                 placeholder="Describe your tool, its features, and any important details renters should know..."
-                rows="4"
+                rows={4}
                 required
-              ></textarea>
+              />
             </div>
 
-            <div style={{ marginBottom: '24px' }}>
-              <label htmlFor="location" style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+            <div className="mb-6">
+              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
                 Pickup Location *
               </label>
               <input
@@ -193,64 +193,64 @@ export default function AddToolPage() {
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: '6px' }}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 placeholder="Enter your address or neighborhood"
                 required
               />
-              <p style={{ marginTop: '4px', fontSize: '12px', color: '#6b7280' }}>
+              <p className="mt-1 text-xs text-gray-500">
                 This helps renters find tools near them. Your exact address will not be shared publicly.
               </p>
             </div>
 
-            <div style={{ marginBottom: '32px' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', marginBottom: '16px' }}>
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 Add Photos
               </h3>
-              <div style={{ border: '2px dashed #d1d5db', borderRadius: '8px', padding: '24px', textAlign: 'center' }}>
-                <div style={{ color: '#9ca3af', marginBottom: '8px' }}>
-                  <svg width="48" height="48" fill="none" viewBox="0 0 24 24" style={{ margin: '0 auto' }}>
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                <div className="text-gray-400 mb-2">
+                  <svg width="48" height="48" fill="none" viewBox="0 0 24 24" className="mx-auto">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
                 </div>
-                <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '8px' }}>
+                <p className="text-sm text-gray-500 mb-2">
                   Click to upload or drag and drop
                 </p>
-                <p style={{ fontSize: '12px', color: '#9ca3af' }}>
+                <p className="text-xs text-gray-400">
                   PNG, JPG, GIF up to 10MB
                 </p>
                 <button
                   type="button"
-                  style={{ backgroundColor: '#f3f4f6', color: '#374151', padding: '8px 16px', borderRadius: '6px', fontSize: '14px', fontWeight: '500', cursor: 'pointer', border: '1px solid #d1d5db', marginTop: '16px' }}
+                  className="mt-4 px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-md border border-gray-300"
                 >
                   Select Files
                 </button>
               </div>
             </div>
 
-            <div style={{ backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '16px', marginBottom: '32px' }}>
-              <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#1e40af', marginBottom: '8px' }}>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+              <h4 className="text-sm font-semibold text-blue-900 mb-2">
                 Listing Guidelines
               </h4>
-              <ul style={{ fontSize: '14px', color: '#1e40af', paddingLeft: '20px', margin: 0 }}>
-                <li style={{ marginBottom: '4px' }}>Be honest about the condition of your tool</li>
-                <li style={{ marginBottom: '4px' }}>Include clear, well-lit photos</li>
-                <li style={{ marginBottom: '4px' }}>Set a fair price based on market rates</li>
-                <li style={{ marginBottom: '4px' }}>Respond to booking requests promptly</li>
+              <ul className="text-sm text-blue-900 list-disc pl-5 space-y-1">
+                <li>Be honest about the condition of your tool</li>
+                <li>Include clear, well-lit photos</li>
+                <li>Set a fair price based on market rates</li>
+                <li>Respond to booking requests promptly</li>
                 <li>Ensure tools are clean and in working order</li>
               </ul>
             </div>
 
-            <div style={{ display: 'flex', gap: '16px' }}>
+            <div className="flex gap-4">
               <button
                 type="submit"
-                style={{ flex: 1, backgroundColor: '#2563eb', color: 'white', padding: '12px 24px', borderRadius: '8px', fontSize: '16px', fontWeight: '500', cursor: 'pointer', border: 'none' }}
+                className="flex-1 bg-emerald-500 text-white px-6 py-3 rounded-lg text-base font-medium"
               >
                 List Tool
               </button>
               <button
                 type="button"
                 onClick={() => window.history.back()}
-                style={{ flex: 1, backgroundColor: '#f3f4f6', color: '#374151', padding: '12px 24px', borderRadius: '8px', fontSize: '16px', fontWeight: '500', cursor: 'pointer', border: '1px solid #d1d5db' }}
+                className="flex-1 bg-gray-100 text-gray-700 px-6 py-3 rounded-lg text-base font-medium border border-gray-300"
               >
                 Cancel
               </button>
