@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
-import Navbar from '../../components/Navbar'
-import BookingStatus from '../../components/BookingStatus'
+import Navbar from '../../../components/Navbar'
+import BookingStatus from '../../../components/BookingStatus'
 
 const mockBookings = [
   {

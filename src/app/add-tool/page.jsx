@@ -1,8 +1,14 @@
+<<<<<<< HEAD:app/add-tool/page.jsx
 "use client";
 
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import { supabase } from "@/lib/supabaseClient";
+=======
+'use client'
+import { useState } from 'react'
+import Navbar from '../../../components/Navbar'
+>>>>>>> c8aa71ab06ba6c343209db1b9f67e7ca552c64ff:src/app/add-tool/page.jsx
 
 export default function AddToolPage() {
   const [formData, setFormData] = useState({
