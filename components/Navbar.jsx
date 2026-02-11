@@ -21,7 +21,8 @@ export default function Navbar() {
 
   return (
     <nav style={{ 
-      backgroundColor: 'transparent', 
+      backgroundColor: '#ffffff',
+      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
       position: 'sticky',
       top: 0,
       zIndex: 1000,
